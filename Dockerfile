@@ -153,4 +153,15 @@ RUN set -ex; \
 RUN pip install databricks-connect==5.5.3
 RUN apk add bash
 
-CMD ["python3"]
+# Copy databricks config file
+COPY docker-entrypoint.sh /tmp/
+
+# Copy Example Script
+COPY example_dbconnect.py /tmp/
+
+# Default ENV
+ENV PORT 15001
+ENV ORGID 0
+
+ENTRYPOINT ["/tmp/docker-entrypoint.sh"]
+CMD ["python", "/tmp/example_dbconnect.py"]
