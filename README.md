@@ -22,7 +22,7 @@ docker run -t \
 -e SHARD='https://yourshard.cloud.databricks.com' \
 -e CLUSTERID=1110-025932-xxxx \
 -e TOKEN='yourtoken' \
-dbconnecttest:latest
+dbconnecttest:latest python /tmp/example_dbconnect.py
 ```
 
 ### Example usage 2

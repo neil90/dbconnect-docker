@@ -3,8 +3,8 @@ FROM openjdk:8-alpine
 
 RUN apk add --no-cache ca-certificates
 
-ENV GPG_KEY 97FC712E4C024BBEA48A61ED3A5CA953F73C700D
-ENV PYTHON_VERSION 3.5.9
+ENV GPG_KEY 0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D
+ENV PYTHON_VERSION 3.7.5
 
 RUN set -ex \
 	&& apk add --no-cache --virtual .fetch-deps \
@@ -33,6 +33,8 @@ RUN set -ex \
 		gdbm-dev \
 		libc-dev \
 		libffi-dev \
+		libnsl-dev \
+		libtirpc-dev \
 		linux-headers \
 		make \
 		ncurses-dev \
@@ -43,6 +45,7 @@ RUN set -ex \
 		tcl-dev \
 		tk \
 		tk-dev \
+		util-linux-dev \
 		xz-dev \
 		zlib-dev \
 # add build deps before removing fetch deps in case there's overlap
@@ -109,7 +112,7 @@ RUN set -ex \
 	\
 	&& find /usr/local -depth \
 		\( \
-			\( -type d -a \( -name test -o -name tests \) \) \
+			\( -type d -a \( -name test -o -name tests -o -name idle_test \) \) \
 			-o \
 			\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
 		\) -exec rm -rf '{}' + \
@@ -144,13 +147,13 @@ RUN set -ex; \
 	\
 	find /usr/local -depth \
 		\( \
-			\( -type d -a \( -name test -o -name tests \) \) \
+			\( -type d -a \( -name test -o -name tests -o -name idle_test \) \) \
 			-o \
 			\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
 		\) -exec rm -rf '{}' +; \
 	rm -f get-pip.py
 
-RUN pip install databricks-connect==5.5.3
+RUN pip install databricks-connect==6.1.0
 RUN apk add bash
 
 # Copy databricks config file
@@ -164,4 +167,3 @@ ENV PORT 15001
 ENV ORGID 0
 
 ENTRYPOINT ["/tmp/docker-entrypoint.sh"]
-CMD ["python", "/tmp/example_dbconnect.py"]
