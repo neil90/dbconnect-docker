@@ -153,7 +153,7 @@ RUN set -ex; \
 		\) -exec rm -rf '{}' +; \
 	rm -f get-pip.py
 
-RUN pip install databricks-connect==6.1.0
+RUN pip install databricks-connect==6.2.0
 RUN apk add bash
 
 # Copy databricks config file
